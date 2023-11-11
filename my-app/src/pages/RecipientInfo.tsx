@@ -28,7 +28,7 @@ const RecipientInfo: FC = () => {
                 <div className='p-3'>
                     <BigCard {...recipient} />
                 </div>
-            ) : (<p>Loading container...</p>)}
+            ) : (<p>Loading recipients...</p>)}
         </>
     )
 }

@@ -38,7 +38,7 @@ const RecipientLayout: FC = () => {
                     </div>
                 ))
             ) : (
-                <p>Loading containers...</p>
+                <p>Loading recipients...</p>
             )}
         </div>
     );
