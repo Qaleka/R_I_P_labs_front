@@ -23,13 +23,13 @@ const RecipientInfo: FC = () => {
     }, []);
 
     return (
-        <div>
+        <>
             {recipient ? (
-                <>
+                <div className='p-3'>
                     <BigCard {...recipient} />
-                </>
-            ) : (<p>Loading recipients...</p>)}
-        </div >
+                </div>
+            ) : (<p>Loading container...</p>)}
+        </>
     )
 }
 
