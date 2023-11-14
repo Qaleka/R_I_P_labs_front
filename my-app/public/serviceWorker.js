@@ -1,37 +1,31 @@
 const timeout = 400;
 
 const draft_notifications = null
-const recipients = {//change data
-  "a20163ce-7be5-46ec-a50f-a313476b2bd1": {
-    "uuid": "a20163ce-7be5-46ec-a50f-a313476b2bd1",
-    "fio": "",
-    "email": " ",
-    "age": ,
-    "image_url": "",
-    "adress": "",
+const recipients = {
+  "4bea0842-bcb8-416e-9a63-d89a63e978ca": {
+    "uuid": "4bea0842-bcb8-416e-9a63-d89a63e978ca",
+    "fio": "Олег Орлов Никитович",
+    "email": "OlegO@mail.ru",
+    "age": 27,
+    "image_url": "localhost:9000/images/men1.jpg",
+    "adress": "Москва, ул. Измайловская, д.13, кв.54",
 
   },
-  "8f157a95-dad1-43e0-9372-93b51de06163": {
-    "uuid": "8f157a95-dad1-43e0-9372-93b51de06163",
-    "marking": "DDDU6543210",
-    "type": "20 футовый контейнер увеличенной высоты",
-    "length": 5905,
-    "height": 2596,
-    "width": 2350,
-    "image_url": "localhost:9000/images/8f157a95-dad1-43e0-9372-93b51de06163.jpg",
-    "cargo": "Фрукты",
-    "weight": 13000
+  "18ab9f76-7648-49d2-857d-75ffddf13bea": {
+    "uuid": "18ab9f76-7648-49d2-857d-75ffddf13bea",
+    "fio": "Василий Гречко Валентинович",
+    "email": "Grechko_101@mail.ru",
+    "age": 31,
+    "image_url": "localhost:9000/images/men1.jpg",
+    "adress": "Москва, ул. Тверская, д.25, кв.145",
   },
-  "07d0cbdc-8e0f-4308-a7aa-11976ee6e5b2": {
-    "uuid": "07d0cbdc-8e0f-4308-a7aa-11976ee6e5b2",
-    "marking": "BBBU6543210",
-    "type": "Стандартный 40-ка футовый контейнер",
-    "length": 12045,
-    "height": 2381,
-    "width": 2350,
-    "image_url": "localhost:9000/images/07d0cbdc-8e0f-4308-a7aa-11976ee6e5b2.jpg",
-    "cargo": "Телевизоры",
-    "weight": 19000
+  "	b9778018-9c13-46fd-b785-4a803dc8be0b": {
+    "uuid": "b9778018-9c13-46fd-b785-4a803dc8be0b	",
+    "fio": "Александр Лейко Кириллович",
+    "email": "Alek221@mail.ru",
+    "age": 37,
+    "image_url": "localhost:9000/images/men3.jpg",
+    "adress": "Москва, ул. Изюмская, д.15, кв.89",
   }
 }
 
@@ -78,7 +72,7 @@ self.addEventListener('fetch', (event) => {
       fromNetwork(event.request, timeout)
         .catch((_) => {
           console.log(`Failed to load image`);
-          return fetch('/placeholder2.jpeg')//change image
+          return fetch('/placeholder2.jpeg')
             .then((response) => {
               return new Response(response.body, {
                 status: response.status,
