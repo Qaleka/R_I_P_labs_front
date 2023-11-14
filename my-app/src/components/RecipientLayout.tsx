@@ -33,8 +33,8 @@ const RecipientLayout: FC = () => {
         <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4'>
             {recipients && recipients.length > 0 ? (
                 recipients.map((recipient) => (
-                    <div className='d-flex py-1 px-0 p-sm-1 p-md-2'>
-                        <SmallCard key={recipient.uuid} {...recipient} />
+                    <div className='d-flex py-1 px-0 p-sm-1 p-md-2' key={recipient.uuid}>
+                        <SmallCard {...recipient} />
                     </div>
                 ))
             ) : (

@@ -6,8 +6,8 @@ import Navbar from 'react-bootstrap/Navbar';
 
 function NavigationBar() {
     return (
-        <Navbar expand="sm" className="bg-primary" data-bs-theme="dark">
-            <Container className='recipient-fluid'>
+        <Navbar expand="sm" className="bg-primary bg-dark" data-bs-theme="dark" >
+            <Container className='container-fluid'>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
