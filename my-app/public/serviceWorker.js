@@ -1,6 +1,6 @@
 const timeout = 400;
 
-const draft_notifications = null
+const draft_notification = null
 const recipients = {
   "4bea0842-bcb8-416e-9a63-d89a63e978ca": {
     "uuid": "4bea0842-bcb8-416e-9a63-d89a63e978ca",
@@ -47,6 +47,7 @@ function fromNetwork(request, timeout) {
 
 self.addEventListener('fetch', (event) => {
   const requestURL = new URL(event.request.url);
+  console.log("duvk")
 
   if (requestURL.pathname.startsWith('/api/recipients')) {
     event.respondWith(
