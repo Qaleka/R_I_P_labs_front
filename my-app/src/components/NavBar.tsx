@@ -12,10 +12,10 @@ function NavigationBar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Item>
-                            <Link to="/recipients" className="nav-link">Получатели</Link>
+                            <Link to={`${import.meta.env.BASE_URL}/recipients`} className="nav-link">Получатели</Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Link to="/notifications" className="nav-link">Уведомления</Link>
+                            <Link to={`${import.meta.env.BASE_URL}/notifications`} className="nav-link">Уведомления</Link>
                         </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>

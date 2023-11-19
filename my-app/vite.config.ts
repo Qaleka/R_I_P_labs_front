@@ -10,6 +10,7 @@ export default defineConfig({
       '/images': 'http://localhost:9000'
     }
   },
+  base: "R_I_P_labs_front",
   plugins: [react()],
   build: {
     manifest: true

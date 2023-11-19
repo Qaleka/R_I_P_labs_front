@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -18,7 +19,7 @@ export const SmallCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) => 
             <Card.Title>{fio}</Card.Title>
             <Card.Text>{email}</Card.Text>
         </Card.Body>
-        <a href={`/recipients/${uuid}`} className="btn btn-dark">Подробнее</a>
+        <Link to={`${import.meta.env.BASE_URL}/recipients/${uuid}`} className="btn btn-dark">Подробнее</Link>
     </Card>
 )
 
