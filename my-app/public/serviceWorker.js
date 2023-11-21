@@ -34,9 +34,7 @@ function fromNetwork(request, timeout) {
     var timeoutId = setTimeout(reject, timeout);
     fetch(request).then((response) => {
       clearTimeout(timeoutId);
-      if (response.status < 400) {
-        fulfill(response);
-      } else {
+      if (response.status >= 500 || response.headers.get("Server") == "GitHub.com") {
         reject(new Error(`HTTP error: ${response.status} ${response.statusText}`));
       }
       fulfill(response);
@@ -52,14 +50,26 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fromNetwork(event.request, timeout)
         .catch((err) => {
-          console.log(`Error caught: ${err.message}`);
+          if (err != undefined) {
+            console.log(`Error caught: ${err.message}`);
+          } else {
+            console.log(`Unknown error while sending request`);
+          }
           const recipientIdMatch = requestURL.pathname.match(/^\/api\/recipients\/([^/]+)$/);
 
           if (recipientIdMatch) {
             const recipientId = recipientIdMatch[1];
-            return new Response(JSON.stringify(recipients[recipientId]), {
-              headers: { 'Content-Type': 'application/json; charset=utf-8' },
-            });
+            if (recipients.hasOwnProperty(recipientId)) {
+              return new Response(JSON.stringify(recipients[recipientId]), {
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+              });
+            } else {
+              // Handle the case where containerId is not found
+              return new Response(JSON.stringify({ error: 'Recipient not found' }), {
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                status: 404, // Not Found status code
+              });
+            }
           } else {
             return new Response(JSON.stringify({ draft_notification, recipients: Object.values(recipients) }), {
               headers: { 'Content-Type': 'application/json; charset=utf-8' },
@@ -70,8 +80,12 @@ self.addEventListener('fetch', (event) => {
   } else if (requestURL.pathname.startsWith('/images')) {
     event.respondWith(
       fromNetwork(event.request, timeout)
-        .catch((_) => {
-          console.log(`Failed to load image`);
+      .catch((err) => {
+        if (err != undefined) {
+          console.log(`Error caught: ${err.message}`);
+        } else {
+          console.log(`Unknown error while sending request`);
+        }
           return fetch('placeholder2.jpeg')
             .then((response) => {
               return new Response(response.body, {

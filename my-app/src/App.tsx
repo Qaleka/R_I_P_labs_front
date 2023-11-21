@@ -11,9 +11,11 @@ function App() {
   useEffect(()=>{
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function() {
-        navigator.serviceWorker
-          .register(`${import.meta.env.BASE_URL}/serviceWorker.js`)
-          .then(_ => console.log("service worker registered"))
+        console.log(`${import.meta.env.BASE_URL}serviceWorker.js`)
+        navigator.serviceWorker.register(`${import.meta.env.BASE_URL}serviceWorker.js`)
+        .then(() => {
+          console.log("service worker registered");
+        })
           .catch(err => console.log("service worker not registered", err))
       })
     }
@@ -22,12 +24,14 @@ function App() {
   return (//вопрос
     <>
       <NavigationBar />
+      <div className='container-xl px-2 px-sm-3'>
       <Routes>
-        <Route path={`${import.meta.env.BASE_URL}/`} element={<Navigate to={`${import.meta.env.BASE_URL}/recipients`} />} />
-        <Route path={`${import.meta.env.BASE_URL}/recipients`} element={<AllRecipients />} />
-        <Route path={`${import.meta.env.BASE_URL}/recipients/:recipient_id`} element={<RecipientInfo />} />
-        <Route path={`${import.meta.env.BASE_URL}/notifications`} element={<NotImplemented />} />
+        <Route path="/" element={<Navigate to="recipients" />} />
+        <Route path="/recipients" element={<AllRecipients />} />
+        <Route path="/recipients/:recipient_id" element={<RecipientInfo />} />
+        <Route path="/notifications" element={<NotImplemented />} />
       </Routes>
+      </div>
     </>
   )
 }

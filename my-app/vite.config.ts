@@ -7,10 +7,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': 'http://localhost:7000',
-      '/images': 'http://localhost:9000'
     }
   },
-  base: "R_I_P_labs_front",
+
+  base: "/R_I_P_labs_front/",
   plugins: [react()],
   build: {
     manifest: true
