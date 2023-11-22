@@ -81,8 +81,7 @@ const AllRecipients = () => {
                 ))
                 ) : (
                     <LoadAnimation />
-                )
-                }
+                )}   
         </div>
         </>
     )

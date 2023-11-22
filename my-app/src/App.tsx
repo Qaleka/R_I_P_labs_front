@@ -3,7 +3,8 @@ import { Routes, Route, Navigate  } from 'react-router-dom';
 
 import { AllRecipients } from './pages/AllRecipients'
 import { RecipientInfo } from './pages/RecipientInfo'
-import { NotImplemented } from './pages/NotImplemented'
+// import { NotImplemented } from './pages/NotImplemented'
+import { AllNotifications} from './pages/AllNotifications'
 import NavigationBar from './components/NavBar';
 import { useEffect } from 'react';
 
@@ -29,7 +30,7 @@ function App() {
         <Route path="/" element={<Navigate to="recipients" />} />
         <Route path="/recipients" element={<AllRecipients />} />
         <Route path="/recipients/:recipient_id" element={<RecipientInfo />} />
-        <Route path="/notifications" element={<NotImplemented />} />
+        <Route path="/notifications" element={<AllNotifications />} />
       </Routes>
       </div>
     </>
