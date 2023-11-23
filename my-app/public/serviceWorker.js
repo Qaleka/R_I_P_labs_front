@@ -183,6 +183,9 @@ function fromNetwork(request, timeout) {
   });
 }
 
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim());
+});
 
 self.addEventListener('fetch', (event) => {
   const requestURL = new URL(event.request.url);
@@ -221,9 +224,9 @@ self.addEventListener('fetch', (event) => {
           const notificationIdMatch = requestURL.pathname.match(/^\/api\/notifications\/([^/]+)$/);
 
           if (notificationIdMatch) {
-            const notificationnId = notificationIdMatch[1];
-            if (notifications.hasOwnProperty(notificationnId)) {
-              return new Response(JSON.stringify(notifications[notificationnId]), {
+            const notificationId = notificationIdMatch[1];
+            if (notifications.hasOwnProperty(notificationId)) {
+              return new Response(JSON.stringify(notifications[notificationId]), {
                 headers: { 'Content-Type': 'application/json; charset=utf-8' },
               });
             } else {
@@ -233,7 +236,7 @@ self.addEventListener('fetch', (event) => {
               });
             }
         } else {
-          return new Response(JSON.stringify({ notifications: Object.values(notifications).map((t) => t.notifications) }), {
+          return new Response(JSON.stringify({ notifications: Object.values(notifications).map((t) => t.notification) }), {
             headers: { 'Content-Type': 'application/json; charset=utf-8' },
           });
         }

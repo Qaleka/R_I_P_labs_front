@@ -1,5 +1,5 @@
 import { useEffect, useState, FC } from 'react';
-import { SmallCard, IRecipientProps } from '../components/RecipientCard';
+import { SmallRCard, IRecipientProps } from '../components/RecipientCard';
 import LoadAnimation from '../components/LoadAnimation';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
@@ -76,7 +76,7 @@ const AllRecipients = () => {
             {loaded ? (
                     filteredRecipients.map((recipient) => (
                     <div className='d-flex py-1 justify-content-center p-sm-1 p-md-2' key={recipient.uuid}>
-                        <SmallCard {...recipient} />
+                        <SmallRCard {...recipient} />
                     </div>
                 ))
                 ) : (

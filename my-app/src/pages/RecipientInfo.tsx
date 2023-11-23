@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { BigCard, IRecipientProps } from '../components/RecipientCard';
+import { BigRCard, IRecipientProps } from '../components/RecipientCard';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
@@ -44,7 +44,7 @@ const RecipientInfo: FC = () => {
             </Navbar>
             {loaded ? (
                  recipient ? (
-                    <BigCard {...recipient} />
+                    <BigRCard {...recipient} />
                  ) : (
                      <h4 className='text-center'>Такого получателя не существует</h4>
                  )

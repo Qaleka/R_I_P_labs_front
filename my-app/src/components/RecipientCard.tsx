@@ -12,7 +12,7 @@ export interface IRecipientProps {
     image_url: string
 }
 
-export const SmallCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) => (
+export const SmallRCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) => (
     <Card className='card text-center'>
             <Card.Img variant='top' src={`http://${image_url}`} className='rounded object-fit-cover' />
         <Card.Body className='flex-grow-1'>
@@ -23,11 +23,11 @@ export const SmallCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) => 
     </Card>
 )
 
-export const BigCard: FC<IRecipientProps> = ({fio,email, age,adress, image_url}) => {
+export const BigRCard: FC<IRecipientProps> = ({fio,email, age,adress, image_url}) => {
     return (
         <Card className='mx-auto shadow w-50 p-3 text-center text-md-start' >
              <div className='row'>
-                <div className='col-12 col-md-8 px-md-0overflow-hidden'>
+                <div className='col-12 col-md-8 px-md-0 overflow-hidden'>
                     <Card.Img src={`http://${image_url}`} />
                 </div>
                 <Card.Body className='col-12 col-md-4 ps-md-0'>

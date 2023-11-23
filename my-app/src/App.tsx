@@ -3,19 +3,26 @@ import { Routes, Route, Navigate  } from 'react-router-dom';
 
 import { AllRecipients } from './pages/AllRecipients'
 import { RecipientInfo } from './pages/RecipientInfo'
-// import { NotImplemented } from './pages/NotImplemented'
+
 import { AllNotifications} from './pages/AllNotifications'
+import { NotificationInfo } from './pages/NotificationInfo'
 import NavigationBar from './components/NavBar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import LoadAnimation from './components/LoadAnimation';
 
 function App() {
+  const [serviceWorkerRegistered, setServiceWorkerRegistered] = useState(false);
+
   useEffect(()=>{
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function() {
         console.log(`${import.meta.env.BASE_URL}serviceWorker.js`)
-        navigator.serviceWorker.register(`${import.meta.env.BASE_URL}serviceWorker.js`)
+        navigator.serviceWorker.register(`${import.meta.env.BASE_URL}serviceWorker.js`, { updateViaCache: 'none' })
         .then(() => {
-          console.log("service worker registered");
+          navigator.serviceWorker.ready.then(() => {
+            console.log("service worker is ready");
+            setServiceWorkerRegistered(true)
+          })
         })
           .catch(err => console.log("service worker not registered", err))
       })
@@ -25,14 +32,19 @@ function App() {
   return (//вопрос
     <>
       <NavigationBar />
+      {serviceWorkerRegistered ? (
       <div className='container-xl px-2 px-sm-3'>
       <Routes>
         <Route path="/" element={<Navigate to="recipients" />} />
         <Route path="/recipients" element={<AllRecipients />} />
         <Route path="/recipients/:recipient_id" element={<RecipientInfo />} />
         <Route path="/notifications" element={<AllNotifications />} />
+        <Route path="/notifications/:notification_id" element={<NotificationInfo />} />
       </Routes>
       </div>
+       ) : (
+        <LoadAnimation />
+      )}
     </>
   )
 }

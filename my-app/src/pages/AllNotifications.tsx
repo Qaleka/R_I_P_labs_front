@@ -1,6 +1,6 @@
 // import { useEffect, useState, FC } from 'react';
 import { useEffect, useState } from 'react';
-import { SmallCard, INotificationProps } from '../components/NotificationCard';
+import { SmallNCard, INotificationProps } from '../components/NotificationCard';
 import LoadAnimation from '../components/LoadAnimation';
 // import Navbar from 'react-bootstrap/Navbar';
 // import Form from 'react-bootstrap/Form';
@@ -84,7 +84,7 @@ const AllNotifications = () => {
                 {loaded ? (
                     filteredNotifications.map((notification) => (
                         <div className='d-flex py-1 p-sm-2 p-md-2 justify-content-center' key={notification.uuid}>
-                            <SmallCard  {...notification} />
+                            <SmallNCard  {...notification} />
                         </div>
                     ))
                 ) : (
