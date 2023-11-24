@@ -3,6 +3,8 @@ import { SmallRCard, IRecipientProps } from '../components/RecipientCard';
 import LoadAnimation from '../components/LoadAnimation';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 
 type Response = {
     draft_notification: string;
@@ -10,36 +12,53 @@ type Response = {
 }
 
 interface ISearchProps {
-    recipients: IRecipientProps[]
-    setFilteredRecipients: React.Dispatch<React.SetStateAction<IRecipientProps[]>>
+    setRecipients: React.Dispatch<React.SetStateAction<IRecipientProps[]>>
 }
 
-const Search: FC<ISearchProps> = ({ recipients, setFilteredRecipients }) => {
+async function getRecipients(filter?: string): Promise<Response> {
+    let api = '/api/recipients'
+    if (filter !== undefined) {
+        api += `?fio=${filter}`
+    }
+    return fetch(api)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText)
+            }
+            return response.json() as Promise<Response>
+        })
+}
+
+const Search: FC<ISearchProps> = ({ setRecipients }) => {
     const [searchText, setSearchText] = useState<string>('');
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchText(event.target.value)
-        if (event.target.value == '') {
-            setFilteredRecipients(recipients)
-        } else {
-            setFilteredRecipients(
-                recipients.filter(
-                    (recipient) => recipient.fio.toLowerCase().includes(event.target.value.toLowerCase())
-                )
-            )
-        }
+    const handleSearch = (event: React.FormEvent<any>) => {
+        event.preventDefault();
+        console.log(searchText);
+        getRecipients(searchText)
+            .then(data => {
+                console.log(data)
+                setRecipients(data.recipients)
+            })
     }
     return (
         <Navbar>
-            <Form className="flex-grow-1 shadow shadow-sm">
+            <Form className="d-flex flex-row flex grow-1 gap-2" onSubmit={handleSearch}>
                 <Form.Control
                     type="text"
                     placeholder="Поиск"
-                    className="form-control-sm"
+                    className="form-control-sm flex-grow-1 shadow shadow-sm"
                     data-bs-theme="dark"
                     value={searchText}
-                    onChange={handleChange}
+                    onChange={(e) => setSearchText(e.target.value)}
                 />
+                 <Button
+                    variant="primary"
+                    size="sm"
+                    type="submit"
+                    className="shadow">
+                    Поиск
+                </Button>
             </Form>
         </Navbar>)
 }
@@ -47,22 +66,14 @@ const Search: FC<ISearchProps> = ({ recipients, setFilteredRecipients }) => {
 const AllRecipients = () => {
         const [loaded, setLoaded] = useState<boolean>(false)
         const [recipients, setRecipients] = useState<IRecipientProps[]>([]);
-        const [filteredRecipients, setFilteredRecipients] = useState<IRecipientProps[]>([]);
         const [_, setDraftNotification] = useState('');
     
         useEffect(() => {
-            fetch('/api/recipients')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.statusText)
-                    }
-                    return response.json() as Promise<Response>
-                })
+            getRecipients()
                 .then(data => {
                     console.log(data)
                     setDraftNotification(data.draft_notification)
                     setRecipients(data.recipients)
-                    setFilteredRecipients(data.recipients)
                     setLoaded(true)
                 })
                 .catch((error) => {
@@ -71,11 +82,11 @@ const AllRecipients = () => {
         }, []);
     return (
         <>
-            <Search {...{ recipients, setFilteredRecipients }} />
+            <Search  setRecipients={setRecipients} />
             <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1'>
             {loaded ? (
-                    filteredRecipients.map((recipient) => (
-                    <div className='d-flex py-1 justify-content-center p-sm-1 p-md-2' key={recipient.uuid}>
+                    recipients.map((recipient) => (
+                    <div className='d-flex py-1 p-2 justify-content-center' key={recipient.uuid}>
                         <SmallRCard {...recipient} />
                     </div>
                 ))

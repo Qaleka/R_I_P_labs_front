@@ -5,7 +5,6 @@ import { AllRecipients } from './pages/AllRecipients'
 import { RecipientInfo } from './pages/RecipientInfo'
 
 import { AllNotifications} from './pages/AllNotifications'
-import { NotificationInfo } from './pages/NotificationInfo'
 import NavigationBar from './components/NavBar';
 import { useEffect, useState } from 'react';
 import LoadAnimation from './components/LoadAnimation';
@@ -39,7 +38,6 @@ function App() {
         <Route path="/recipients" element={<AllRecipients />} />
         <Route path="/recipients/:recipient_id" element={<RecipientInfo />} />
         <Route path="/notifications" element={<AllNotifications />} />
-        <Route path="/notifications/:notification_id" element={<NotificationInfo />} />
       </Routes>
       </div>
        ) : (

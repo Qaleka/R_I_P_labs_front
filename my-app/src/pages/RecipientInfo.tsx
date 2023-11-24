@@ -46,7 +46,7 @@ const RecipientInfo: FC = () => {
                  recipient ? (
                     <BigRCard {...recipient} />
                  ) : (
-                     <h4 className='text-center'>Такого получателя не существует</h4>
+                     <h3 className='text-center'>Такого получателя не существует</h3>
                  )
              ) : (
                 <LoadAnimation />
