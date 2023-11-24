@@ -81,7 +81,7 @@ self.addEventListener('fetch', (event) => {
             }
           } else {
             filteredRecipients = Object.values(recipients)
-            let type = requestURL.searchParams.get("fio")
+            let fio = requestURL.searchParams.get("fio")
             if (fio) {
               fio = fio.toLowerCase()
               filteredRecipients = filteredRecipients.filter(
