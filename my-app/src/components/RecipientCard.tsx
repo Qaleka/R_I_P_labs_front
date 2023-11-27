@@ -19,7 +19,7 @@ export const SmallRCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) =>
             <Card.Title>{fio}</Card.Title>
             <Card.Text>{email}</Card.Text>
         </Card.Body>
-        <Link to={`/recipients/${uuid}`} className="btn btn-dark">Подробнее</Link>
+        <Link to={`/recipients/${uuid}`} className="btn btn-primary">Подробнее</Link>
     </Card>
 )
 

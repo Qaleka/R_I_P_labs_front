@@ -48,7 +48,7 @@ const Search: FC<ISearchProps> = ({ setRecipients }) => {
                     type="text"
                     placeholder="Поиск"
                     className="form-control-sm flex-grow-1 shadow shadow-sm"
-                    data-bs-theme="dark"
+                    data-bs-theme="primary"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                 />

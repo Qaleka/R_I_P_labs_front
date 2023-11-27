@@ -30,19 +30,20 @@ function App() {
   
   return (//вопрос
     <>
+      <div className='container-xl px-2 px-sm-3'>
       <NavigationBar />
       {serviceWorkerRegistered ? (
-      <div className='container-xl px-2 px-sm-3'>
       <Routes>
         <Route path="/" element={<Navigate to="recipients" />} />
         <Route path="/recipients" element={<AllRecipients />} />
         <Route path="/recipients/:recipient_id" element={<RecipientInfo />} />
         <Route path="/notifications" element={<AllNotifications />} />
       </Routes>
-      </div>
+      
        ) : (
         <LoadAnimation />
       )}
+      </div>
     </>
   )
 }
