@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import LoadAnimation from '../components/LoadAnimation';
+import { getRecipient } from '../requests/GetRecipient'
 
 
 const RecipientInfo: FC = () => {
@@ -13,16 +14,10 @@ const RecipientInfo: FC = () => {
     const [loaded, setLoaded] = useState<boolean>(false)
 
     useEffect(() => {
-        fetch(`/api/recipients/${recipient_id}`)
-            .then(response => {
-                setLoaded(true)
-                if (!response.ok) {
-                    throw new Error(response.statusText)
-                }
-                return response.json() as Promise<IRecipientProps>
-            })
+        getRecipient(recipient_id)
             .then(data => {
                 setRecipient(data)
+                setLoaded(true)
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);

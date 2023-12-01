@@ -5,28 +5,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-
-type Response = {
-    draft_notification: string;
-    recipients: IRecipientProps[];
-}
+import { getAllRecipients } from '../requests/GetAllRecipients'
 
 interface ISearchProps {
     setRecipients: React.Dispatch<React.SetStateAction<IRecipientProps[]>>
-}
-
-async function getRecipients(filter?: string): Promise<Response> {
-    let api = '/api/recipients'
-    if (filter !== undefined) {
-        api += `?fio=${filter}`
-    }
-    return fetch(api)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText)
-            }
-            return response.json() as Promise<Response>
-        })
 }
 
 const Search: FC<ISearchProps> = ({ setRecipients }) => {
@@ -34,8 +16,7 @@ const Search: FC<ISearchProps> = ({ setRecipients }) => {
 
     const handleSearch = (event: React.FormEvent<any>) => {
         event.preventDefault();
-        console.log(searchText);
-        getRecipients(searchText)
+        getAllRecipients(searchText)
             .then(data => {
                 console.log(data)
                 setRecipients(data.recipients)
@@ -66,10 +47,10 @@ const Search: FC<ISearchProps> = ({ setRecipients }) => {
 const AllRecipients = () => {
         const [loaded, setLoaded] = useState<boolean>(false)
         const [recipients, setRecipients] = useState<IRecipientProps[]>([]);
-        const [_, setDraftNotification] = useState('');
+        const [_, setDraftNotification] = useState<string | null>(null);
     
         useEffect(() => {
-            getRecipients()
+            getAllRecipients()
                 .then(data => {
                     console.log(data)
                     setDraftNotification(data.draft_notification)

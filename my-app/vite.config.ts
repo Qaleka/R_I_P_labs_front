@@ -11,8 +11,5 @@ export default defineConfig({
   },
 
   base: "/R_I_P_labs_front/",
-  plugins: [react()],
-  build: {
-    manifest: true
-  }
+  plugins: [react()]
 })

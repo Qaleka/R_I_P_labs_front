@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import CardImage from './CardImage';
 
 export interface IRecipientProps {
     uuid: string
@@ -12,9 +13,14 @@ export interface IRecipientProps {
     image_url: string
 }
 
+// const setPlaceholder = (event: any) => {
+//     event.target.src = '/placeholder3.jpg';
+// };
+
 export const SmallRCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) => (
     <Card className='card text-center'>
-            <Card.Img variant='top' src={`http://${image_url}`} className='rounded object-fit-cover' />
+            <CardImage url={`http://${image_url}`} className='rounded object-fit-cover'/>
+            {/* <Card.Img src={`http://${image_url}`} alt='картинка контейнера' onError={setPlaceholder} className='rounded object-fit-cover' /> */}
         <Card.Body className='flex-grow-1'>
             <Card.Title>{fio}</Card.Title>
             <Card.Text>{email}</Card.Text>
@@ -28,7 +34,8 @@ export const BigRCard: FC<IRecipientProps> = ({fio,email, age,adress, image_url}
         <Card className='mx-auto shadow w-50 p-3 text-center text-md-start' >
              <div className='row'>
                 <div className='col-12 col-md-8 px-md-0 overflow-hidden'>
-                    <Card.Img src={`http://${image_url}`} />
+                    {/* <Card.Img src={`http://${image_url}`} onError={setPlaceholder}/> */}
+                    <CardImage url={`http://${image_url}`}/>
                 </div>
                 <Card.Body className='col-12 col-md-4 ps-md-0'>
                     <ListGroup variant="flush">
