@@ -19,8 +19,7 @@ export interface IRecipientProps {
 
 export const SmallRCard: FC<IRecipientProps> = ({ uuid,fio,email, image_url}) => (
     <Card className='card text-center'>
-            <CardImage url={`http://${image_url}`} className='rounded object-fit-cover'/>
-            {/* <Card.Img src={`http://${image_url}`} alt='картинка контейнера' onError={setPlaceholder} className='rounded object-fit-cover' /> */}
+            <CardImage url={image_url} className='rounded object-fit-cover'/>
         <Card.Body className='flex-grow-1'>
             <Card.Title>{fio}</Card.Title>
             <Card.Text>{email}</Card.Text>
@@ -35,7 +34,7 @@ export const BigRCard: FC<IRecipientProps> = ({fio,email, age,adress, image_url}
              <div className='row'>
                 <div className='col-12 col-md-8 px-md-0 overflow-hidden'>
                     {/* <Card.Img src={`http://${image_url}`} onError={setPlaceholder}/> */}
-                    <CardImage url={`http://${image_url}`}/>
+                    <CardImage url={image_url}/>
                 </div>
                 <Card.Body className='col-12 col-md-4 ps-md-0'>
                     <ListGroup variant="flush">
