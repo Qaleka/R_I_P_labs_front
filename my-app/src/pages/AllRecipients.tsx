@@ -18,7 +18,6 @@ const Search: FC<ISearchProps> = ({ setRecipients }) => {
         event.preventDefault();
         getAllRecipients(searchText)
             .then(data => {
-                console.log(data)
                 setRecipients(data.recipients)
             })
     }
@@ -52,7 +51,6 @@ const AllRecipients = () => {
         useEffect(() => {
             getAllRecipients()
                 .then(data => {
-                    console.log(data)
                     setDraftNotification(data.draft_notification)
                     setRecipients(data.recipients)
                     setLoaded(true)
