@@ -7,7 +7,7 @@ export type Response = {
 }
 
 export async function getAllRecipients(filter?: string): Promise<Response> {
-    let url = '/api/recipients'
+    let url = '/api/recipients/'
     if (filter !== undefined) {
         url += `?fio=${filter}`
     }
