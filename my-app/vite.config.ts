@@ -10,6 +10,6 @@ export default defineConfig({
     }
   },
 
-  base: "/R_I_P_labs_front/",
+  base: "/",
   plugins: [react()]
 })

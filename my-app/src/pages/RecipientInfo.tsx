@@ -1,28 +1,35 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { BigRCard, IRecipientProps } from '../components/RecipientCard';
+import { BigRCard } from '../components/RecipientCard';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import LoadAnimation from '../components/LoadAnimation';
-import { getRecipient } from '../requests/GetRecipient'
+import { getRecipient } from '../api'
+import { AppDispatch, RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { setRecipient, resetRecipient } from "../store/recipientSlice"
 
 
 const RecipientInfo: FC = () => {
     let { recipient_id } = useParams()
-    const [recipient, setRecipient] = useState<IRecipientProps>()
+    const recipient = useSelector((state: RootState) => state.recipient.recipient);
     const [loaded, setLoaded] = useState<boolean>(false)
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         getRecipient(recipient_id)
             .then(data => {
-                setRecipient(data)
+                dispatch(setRecipient(data))
                 setLoaded(true)
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });
-    }, []);
+            return () => {
+                dispatch(resetRecipient());
+            };
+        }, [dispatch]);
 
     return (
         <>
@@ -51,4 +58,4 @@ const RecipientInfo: FC = () => {
     )
 }
 
-export { RecipientInfo }
+export default RecipientInfo 

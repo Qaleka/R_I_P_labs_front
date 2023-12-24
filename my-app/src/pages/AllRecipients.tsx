@@ -1,69 +1,62 @@
-import { useEffect, useState, FC } from 'react';
-import { SmallRCard, IRecipientProps } from '../components/RecipientCard';
+import { useEffect } from 'react';
+import { SmallRCard } from '../components/RecipientCard';
 import LoadAnimation from '../components/LoadAnimation';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
-import { getAllRecipients } from '../requests/GetAllRecipients'
-
-interface ISearchProps {
-    setRecipients: React.Dispatch<React.SetStateAction<IRecipientProps[]>>
-}
-
-const Search: FC<ISearchProps> = ({ setRecipients }) => {
-    const [searchText, setSearchText] = useState<string>('');
-
-    const handleSearch = (event: React.FormEvent<any>) => {
-        event.preventDefault();
-        getAllRecipients(searchText)
-            .then(data => {
-                setRecipients(data.recipients)
-            })
-    }
-    return (
-        <Navbar>
-            <Form className="d-flex flex-row flex grow-1 gap-2" onSubmit={handleSearch}>
-                <Form.Control
-                    type="text"
-                    placeholder="Поиск"
-                    className="form-control-sm flex-grow-1 shadow shadow-sm"
-                    data-bs-theme="primary"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                />
-                 <Button
-                    variant="primary"
-                    size="sm"
-                    type="submit"
-                    className="shadow">
-                    Поиск
-                </Button>
-            </Form>
-        </Navbar>)
-}
+import { getAllRecipients } from '../api'
+import { AppDispatch, RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter, setRecipients } from "../store/recipientSlice"
+import { setDraft } from '../store/notificationSlice';
 
 const AllRecipients = () => {
-        const [loaded, setLoaded] = useState<boolean>(false)
-        const [recipients, setRecipients] = useState<IRecipientProps[]>([]);
-        const [_, setDraftNotification] = useState<string | null>(null);
-    
-        useEffect(() => {
-            getAllRecipients()
+    const searchText = useSelector((state: RootState) => state.recipient.searchText);
+    const recipients = useSelector((state: RootState) => state.recipient.recipients);
+    const _ = useSelector((state: RootState) => state.notification.draft);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const getRecipients = () =>
+            getAllRecipients(searchText)
                 .then(data => {
-                    setDraftNotification(data.draft_notification)
-                    setRecipients(data.recipients)
-                    setLoaded(true)
+                    dispatch(setRecipients(data?.recipients))
+                    dispatch(setDraft(data?.draft_notification))
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
                 });
-        }, []);
+
+                const handleSearch = (event: React.FormEvent<any>) => {
+                    event.preventDefault();
+                    getRecipients();
+                }
+            
+                useEffect(() => {
+                    getRecipients();
+                }, [dispatch]);            
     return (
         <>
-            <Search  setRecipients={setRecipients} />
+             <Navbar>
+                <Form className="d-flex flex-row flex-grow-1 gap-2" onSubmit={handleSearch}>
+                    <Form.Control
+                        type="text"
+                        placeholder="Поиск"
+                        className="form-control-sm flex-grow-1 shadow"
+                        data-bs-theme="primary"
+                        value={searchText}
+                        onChange={(e) => dispatch(setFilter(e.target.value))}
+                    />
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        type="submit"
+                        className="shadow-lg">
+                        Поиск
+                    </Button>
+                </Form>
+            </Navbar>
             <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1'>
-            {loaded ? (
+            {recipients ? (
                     recipients.map((recipient) => (
                     <div className='d-flex py-1 p-2 justify-content-center' key={recipient.uuid}>
                         <SmallRCard {...recipient} />
@@ -77,4 +70,4 @@ const AllRecipients = () => {
     )
 }
 
-export { AllRecipients }
+export default AllRecipients

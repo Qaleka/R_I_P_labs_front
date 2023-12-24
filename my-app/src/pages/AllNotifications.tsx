@@ -5,4 +5,4 @@ const AllNotifications = () => {
     )
 }
 
-export { AllNotifications }
+export default AllNotifications 
