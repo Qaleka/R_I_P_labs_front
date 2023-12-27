@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
+import {Card, ButtonGroup} from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
 import CardImage from './CardImage';
 import { IRecipient } from '../models'
@@ -11,14 +11,21 @@ import { IRecipient } from '../models'
 //     event.target.src = '/placeholder3.jpg';
 // };
 
-export const SmallRCard: FC<IRecipient> = ({ uuid,fio,email, image_url}) => (
-    <Card className='card text-center'>
+interface CardProps extends IRecipient {
+    children: ReactNode;
+}
+export const SmallRCard: FC<CardProps> = ({ children, uuid, fio, email, image_url}) => (
+
+    <Card className='card text-center' key={uuid}>
             <CardImage url={image_url} className='rounded object-fit-cover' />
         <Card.Body className='flex-grow-1'>
             <Card.Title>{fio}</Card.Title>
             <Card.Text>{email}</Card.Text>
         </Card.Body>
-        <Link to={`/recipients/${uuid}`} className="btn btn-primary">Подробнее</Link>
+        <ButtonGroup vertical>
+            <Link to={`/recipients/${uuid}`} className="btn btn-primary">Подробнее</Link>
+            <>{children}</>
+        </ButtonGroup>
     </Card>
 )
 

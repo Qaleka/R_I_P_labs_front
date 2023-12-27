@@ -1,6 +1,6 @@
 import { recipients, draft_notification } from './MockData';
 import { IRecipient } from '../models';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 
 const ip = 'localhost'
@@ -10,8 +10,13 @@ export const imagePlaceholder = `${import.meta.env.BASE_URL}placeholder.jpg`
 export const axiosAPI = axios.create({ baseURL: `http://${ip}:${port}/api/`, timeout: 500 });
 export const axiosImage = axios.create({ baseURL: `http://${ip}:${port}/images/`, timeout: 1000 });
 
+type Draft = {
+    uuid: string;
+    recipient_count: number;
+}
+
 export type Response = {
-    draft_notification: string | null;
+    draft_notification: Draft  | null;
     recipients: IRecipient[];
 }
 
@@ -20,7 +25,12 @@ export async function getAllRecipients(filter?: string): Promise<Response> {
     if (filter !== undefined) {
         url += `?fio=${filter}`;
     }
-    return axiosAPI.get<Response>(url)
+    const headers: AxiosRequestConfig['headers'] = {};
+    let accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    return axiosAPI.get<Response>(url, { headers })
         .then(response => response.data)
         .catch(_ => fromMock(filter))
 }
