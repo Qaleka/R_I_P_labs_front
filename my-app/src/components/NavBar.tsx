@@ -1,34 +1,60 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { useSelector } from "react-redux";
+import { Nav, Navbar, Button } from 'react-bootstrap';
 
-import { RootState } from "../store";
+import { axiosAPI } from '../api';
+import { AppDispatch, RootState } from "../store";
+import { resetLogin, resetRole } from "../store/userSlice";
 
 function NavigationBar() {
     const userLogin = useSelector((state: RootState) => state.user.login);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const logout = () => {
+        let accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            return
+        }
+        axiosAPI.get('/user/logout', { headers: { 'Authorization': `Bearer ${accessToken}` } })
+            .then(_ => {
+                dispatch(resetLogin())
+                dispatch(resetRole())
+                localStorage.clear()
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    }
     return (
         <Navbar expand="lg" className="bg-primary bg-primary" >
             <div className='container-xl px-2 px-sm-3'>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto flex-grow-1">
-                        <Nav.Item>
-                            <Link to="" className="nav-link ps-0">Главная</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link to="/recipients" className="nav-link">Получатели</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link to="/notifications" className="nav-link">Уведомления</Link>
-                        </Nav.Item>
-                        {userLogin &&
-                            <Navbar.Collapse className="justify-content-end">
-                                <Navbar.Text>
-                                    {userLogin}
-                                </Navbar.Text>
-                            </Navbar.Collapse>
-                        }
+                    <Link to="/recipients" className="nav-link">Получатели</Link>
+                        <Link to="/notifications" className="nav-link">Уведомления</Link>
+                        <Navbar.Collapse className="justify-content-end">
+                            {userLogin ? (
+                                <>
+                                    <Navbar.Text className="px-2">
+                                        {userLogin}
+                                    </Navbar.Text>
+                                    <Navbar.Text className="d-none d-sm-block">|</Navbar.Text>
+                                    <Button
+                                        variant="link"
+                                        className="nav-link"
+                                        onClick={logout}>
+                                        Выйти
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to='/authorization' className="nav-link">Войти</Link>
+                                    <Navbar.Text className="d-none d-sm-block">|</Navbar.Text>
+                                    <Link to='/registration' className="nav-link">Регистрация</Link>
+                                </>
+                            )}
+                        </Navbar.Collapse>
                     </Nav>
                 </Navbar.Collapse>
             </div>

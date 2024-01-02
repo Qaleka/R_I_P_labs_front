@@ -5,15 +5,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import LoadAnimation from '../components/LoadAnimation';
 import { getRecipient } from '../api'
-import { AppDispatch, RootState } from "../store";
-import { useDispatch, useSelector } from "react-redux";
-import { setRecipient, resetRecipient } from "../store/recipientSlice"
+import { IRecipient } from '../models';
+import { AppDispatch } from "../store";
+import { useDispatch } from "react-redux";
 import { addToHistory } from "../store/historySlice"
 import Breadcrumbs from '../components/Breadcrumbs';
 
 const RecipientInfo: FC = () => {
     let { recipient_id } = useParams()
-    const recipient = useSelector((state: RootState) => state.recipient.recipient);
+    const [recipient, setRecipient] = useState<IRecipient | undefined>(undefined)
     const [loaded, setLoaded] = useState<boolean>(false)
     const dispatch = useDispatch<AppDispatch>();
     const location = useLocation().pathname;
@@ -23,16 +23,13 @@ const RecipientInfo: FC = () => {
     useEffect(() => {
         getRecipient(recipient_id)
             .then(data => {
-                dispatch(setRecipient(data))
-                dispatch(addToHistory({ path: location, name: data ? data.fio : "неизвестно" }))
-                setLoaded(true)
+                setRecipient(data);
+                dispatch(addToHistory({ path: location, name: data ? data.fio : "неизвестно" }));
+                setLoaded(true);
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });
-            return () => {
-                dispatch(resetRecipient());
-            };
         }, [dispatch]);
 
         return loaded ? (

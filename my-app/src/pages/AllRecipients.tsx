@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SmallRCard } from '../components/RecipientCard';
 import LoadAnimation from '../components/LoadAnimation';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,24 +9,23 @@ import { useLocation, Link } from 'react-router-dom';
 
 import { getAllRecipients, axiosAPI } from '../api'
 import { AppDispatch, RootState } from "../store";
-import { setFilter, setRecipients } from "../store/recipientSlice"
+import { setFio } from "../store/searchSlice"
 import { clearHistory, addToHistory } from "../store/historySlice"
-import { setDraft } from '../store/notificationSlice';
+import { IRecipient } from '../models'
 
 const AllRecipients = () => {
-    const searchText = useSelector((state: RootState) => state.recipient.searchText);
-    const recipients = useSelector((state: RootState) => state.recipient.recipients);
+    const searchText = useSelector((state: RootState) => state.search.fio);
+    const [recipients, setRecipients] = useState<IRecipient[]>([])
+    const [draft, setDraft] = useState<string | null>(null)
     const role = useSelector((state: RootState) => state.user.role);
-    const draft = useSelector((state: RootState) => state.notification.draft);
     const dispatch = useDispatch<AppDispatch>();
     const location = useLocation().pathname;
 
     const getRecipients = () =>
             getAllRecipients(searchText)
                 .then(data => {
-                    console.log(data)
-                    dispatch(setRecipients(data?.recipients))
-                    dispatch(setDraft(data?.draft_notification?.uuid))
+                    setRecipients(data.recipients)
+                    setDraft(data.draft_notification)
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -50,8 +49,8 @@ const AllRecipients = () => {
                     }
             
                     axiosAPI.post(`/recipients/${id}/add_to_notification`, null, { headers: { 'Authorization': `Bearer ${accessToken}`, } })
-                        .then(response => {
-                            dispatch(setDraft(response.data.uuid))
+                        .then(() => {
+                            getRecipients();
                         })
                         .catch((error) => {
                             console.error("Error fetching data:", error);
@@ -67,7 +66,7 @@ const AllRecipients = () => {
                         className="form-control-sm flex-grow-1 shadow"
                         data-bs-theme="primary"
                         value={searchText}
-                        onChange={(e) => dispatch(setFilter(e.target.value))}
+                        onChange={(e) => dispatch(setFio(e.target.value))}
                     />
                     <Button
                         variant="primary"
@@ -83,7 +82,7 @@ const AllRecipients = () => {
                     recipients.map((recipient) => (
                     <div className='d-flex py-1 p-2 justify-content-center' key={recipient.uuid}>
                         <SmallRCard  {...recipient}>
-                                {role != '0' &&
+                                {role != 0 &&
                                     <Button
                                         variant='outline-primary'
                                         className='mt-0 rounded-bottom'
@@ -98,11 +97,13 @@ const AllRecipients = () => {
                     <LoadAnimation />
                 )}   
         </div>
-        {draft && <Link
-                to={`/notifications/${draft}`}
-                className="btn btn-primary rounded-pill"
-                style={{ position: 'fixed', bottom: '16px', right: '16px', zIndex: '1000' }}>
-                Корзина
+        {!!role && <Link to={`/notifications/${draft}`}>
+                <Button
+                    style={{ position: 'fixed', bottom: '16px', right: '16px', zIndex: '1000' }}
+                    className="btn btn-primary rounded-pill"
+                    disabled={!draft}>
+                    Корзина
+                </Button>
             </Link>}
         </>
     )

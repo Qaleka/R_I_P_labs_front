@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface userState {
     login: string | null
-    role: string
+    role: number
 }
 
 const initialState: userState = {
     login: null,
-    role: '0'
+    role: 0,
 }
 
 const userSlice = createSlice({
@@ -25,7 +25,7 @@ const userSlice = createSlice({
         },
         resetRole: (state) => {
             state.login = null
-            state.role = '0'
+            state.role = 0
         },
     },
 });

@@ -1,4 +1,3 @@
-export { default as Main } from './Main';
 export { default as AllRecipients } from './AllRecipients';
 export { default as RecipientsTable } from './RecipientsTable';
 export { default as RecipientInfo } from './RecipientInfo';

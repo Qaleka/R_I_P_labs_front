@@ -15,7 +15,6 @@ interface CardProps extends IRecipient {
     children: ReactNode;
 }
 export const SmallRCard: FC<CardProps> = ({ children, uuid, fio, email, image_url}) => (
-
     <Card className='card text-center' key={uuid}>
             <CardImage url={image_url} className='rounded object-fit-cover' />
         <Card.Body className='flex-grow-1'>

@@ -7,16 +7,12 @@ const ip = 'localhost'
 const port = '3000'
 export const imagePlaceholder = `${import.meta.env.BASE_URL}placeholder.jpg`
 
-export const axiosAPI = axios.create({ baseURL: `http://${ip}:${port}/api/`, timeout: 500 });
+export const axiosAPI = axios.create({ baseURL: `http://${ip}:${port}/api/`, timeout: 2000 });
 export const axiosImage = axios.create({ baseURL: `http://${ip}:${port}/images/`, timeout: 1000 });
 
-type Draft = {
-    uuid: string;
-    recipient_count: number;
-}
 
 export type Response = {
-    draft_notification: Draft  | null;
+    draft_notification: string   | null;
     recipients: IRecipient[];
 }
 

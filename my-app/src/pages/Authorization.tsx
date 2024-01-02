@@ -3,39 +3,59 @@ import { Form, Button, Container, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { axiosAPI } from '../api'
-import { AxiosResponse, AxiosError } from 'axios';
 import { AppDispatch } from "../store";
 import { setLogin as setLoginRedux, setRole } from "../store/userSlice";
+
+interface JwtPayload {
+    iss: string;
+    exp: number;
+    role: number;
+    login: string;
+}
+
+function parseJwt(token: string): JwtPayload {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+interface AuthResp {
+    access_token: string;
+    token_type: string;
+}
 
 const Authorization: FC = () => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>();
+
+    const authorize = async (login: string, password: string): Promise<void> => {
+        const response = await axiosAPI.post<AuthResp>('/user/login', { login, password });
+        const payload = parseJwt(response.data.access_token);
+        let expires_at = new Date(payload.exp * 1000);
+        localStorage.setItem('expires_at', expires_at.toISOString());
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('role', payload.role.toString());
+        localStorage.setItem('login', payload.login);
+        dispatch(setLoginRedux(login));
+        dispatch(setRole(payload.role));
+    }
 
     const handleRegistration = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        axiosAPI.post('/user/login', { login, password })
-            .then((response: AxiosResponse) => {
-                let currentTime = new Date()
-                let expires_at = new Date(currentTime.getTime() + parseInt(response.data.expires_in) / 1000000)
-                localStorage.setItem('expires_at', expires_at.toISOString());
-                localStorage.setItem('access_token', response.data.access_token);
-                localStorage.setItem('role', response.data.role);
-                localStorage.setItem('login', response.data.login);
-                dispatch(setLoginRedux(login));
-                dispatch(setRole(response.data.role));
-                navigate('/')
-            })
-            .catch((error: AxiosError) => {
-                console.error('Error:', error.message);
-            })
+        authorize(login, password)
+        .then(() => navigate('/'))
     };
     return (
         <Card className='mx-auto shadow w-50 p-3 text-center text-md-start' border="primary">
         <Container fluid="sm" className='d-flex flex-column flex-grow-1 align-items-center justify-content-center'>
             <Form onSubmit={handleRegistration} className='d-flex flex-column align-items-center'>
-                <h2>Авторизация</h2>
+                <h2>Вход</h2>
 
                 <Form.Group controlId="login" className='d-flex flex-column align-items-center mt-2'>
                     <Form.Label>Логин</Form.Label>
