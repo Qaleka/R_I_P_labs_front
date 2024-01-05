@@ -24,8 +24,7 @@ const AllNotifications = () => {
     const location = useLocation().pathname;
     const [loaded, setLoaded] = useState(false)
 
-    const handleSearch = (event: React.FormEvent<any>) => {
-        event.preventDefault();
+    const getData = () => {
         setLoaded(false)
         getNotifications(statusFilter, startDate, endDate)
             .then((data) => {
@@ -35,26 +34,22 @@ const AllNotifications = () => {
             .catch((error) => {
                 console.error("Error fetching data:", error);
                 setLoaded(true)
-            });
+            })
+        };
+    
+        const handleSearch = (event: React.FormEvent<any>) => {
+            event.preventDefault();
+            getData()
     }
 
     useEffect(() => {
         dispatch(clearHistory())
         dispatch(addToHistory({ path: location, name: "Уведомления" }))
-        setLoaded(false)
-        getNotifications(statusFilter, startDate, endDate)
-            .then((data) => {
-                setNotifications(data)
-                setLoaded(true)
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-                setLoaded(true)
-            });
+        getData()
     }, [dispatch]);
 
 
-    return loaded ? (
+    return (
         <>
             <Navbar>
                 <Form className="d-flex flex-row align-items-stretch flex-grow-1 gap-2" onSubmit={handleSearch}>
@@ -88,48 +83,48 @@ const AllNotifications = () => {
                     </Button>
                 </Form>
             </Navbar>
-            <Table bordered hover>
-                <thead>
-                    <tr>
-                        {role == MODERATOR && <th className='text-center'>Пользователь</th>}
-                        <th className='text-center'>Статус</th>
-                        <th className='text-center'>Дата создания</th>
-                        <th className='text-center'>Дата формирования</th>
-                        <th className='text-center'>Дата завершения</th>
-                        <th className='text-center'>Тип уведомления</th>
-                        <th className='text-center'></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {notifications.map((notification) => (
-                        <tr key={notification.uuid}>
-                            {role == MODERATOR && <td className='text-center'>{notification.customer}</td>}
-                            <td className='text-center'>{notification.status}</td>
-                            <td className='text-center'>{notification.creation_date}</td>
-                            <td className='text-center'>{notification.formation_date}</td>
-                            <td className='text-center'>{notification.completion_date}</td>
-                            <td className='text-center'>{notification.notification_type}</td>
-                            <td className=''>
-                                <Col className='d-flex flex-col align-items-center justify-content-center'>
-                                    <Link to={`/notifications/${notification.uuid}`} className='text-decoration-none' >
-                                        <Button
-                                            variant='outline-secondary'
-                                            size='sm'
-                                            className='align-self-center'
-                                        >
-                                            Подробнее
-                                        </Button>
-                                    </Link>
-                                </Col>
-                            </td>
+            < LoadAnimation loaded={loaded}>
+                <Table bordered hover>
+                    <thead>
+                        <tr>
+                            {role == MODERATOR && <th className='text-center'>Пользователь</th>}
+                            <th className='text-center'>Статус</th>
+                            <th className='text-center'>Дата создания</th>
+                            <th className='text-center'>Дата формирования</th>
+                            <th className='text-center'>Дата завершения</th>
+                            <th className='text-center'>Тиа уведомления</th>
+                            <th className='text-center'></th>
                         </tr>
-                     ))}
-                     </tbody>
-                 </Table>
+                        </thead>
+                    <tbody>
+                        {notifications.map((notification) => (
+                            <tr key={notification.uuid}>
+                                {role == MODERATOR && <td className='text-center'>{notification.customer}</td>}
+                                <td className='text-center'>{notification.status}</td>
+                                <td className='text-center'>{notification.creation_date}</td>
+                                <td className='text-center'>{notification.formation_date}</td>
+                                <td className='text-center'>{notification.completion_date}</td>
+                                <td className='text-center'>{notification.notification_type}</td>
+                                <td className=''>
+                                    <Col className='d-flex flex-col align-items-center justify-content-center'>
+                                        <Link to={`/notifications/${notification.uuid}`} className='text-decoration-none' >
+                                            <Button
+                                                variant='outline-secondary'
+                                                size='sm'
+                                                className='align-self-center'
+                                            >
+                                                Подробнее
+                                            </Button>
+                                        </Link>
+                                    </Col>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </LoadAnimation >
         </>
-         ) : (
-            <LoadAnimation />
-    );
+         )
 }
 
 export default AllNotifications 

@@ -2,7 +2,7 @@ import './App.css'
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-import { AllRecipients, RecipientsTable, RecipientInfo, RecipientEdit, AllNotifications, NotificationInfo, Authorization, Registration } from './pages'
+import { AllRecipients, RecipientInfo, AllNotifications, NotificationInfo, Authorization, Registration } from './pages'
 import NavigationBar from './components/NavBar';
 
 import { AppDispatch } from "./store";
@@ -28,9 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/recipients" />} />
         <Route path="/recipients" element={<AllRecipients />} />
-        <Route path="/recipients/edit" element={<AuthCheck allowedRoles={[MODERATOR]}><RecipientsTable /></AuthCheck>} />
         <Route path="/recipients/:recipient_id" element={<RecipientInfo />} />
-        <Route path="/recipients/edit/:recipient_id" element={<AuthCheck allowedRoles={[MODERATOR]}><RecipientEdit /></AuthCheck>} />
         <Route path="/notifications" element={<AuthCheck allowedRoles={[CUSTOMER, MODERATOR]}><AllNotifications /></AuthCheck>} />
         <Route path="/notifications/:notification_id" element={<AuthCheck allowedRoles={[CUSTOMER, MODERATOR]}><NotificationInfo /></AuthCheck>} />
         <Route path="/registration" element={<Registration />} />

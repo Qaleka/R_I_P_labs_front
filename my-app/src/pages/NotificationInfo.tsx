@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
-import { Card, Row, Col, Navbar, Nav, InputGroup, Form, Button, ButtonGroup } from 'react-bootstrap';
+import { Card, Row, Col, Navbar, InputGroup, Form, Button, ButtonGroup } from 'react-bootstrap';
 
 import { axiosAPI } from "../api";
 import { getNotification } from '../api/Notifications';
@@ -37,9 +37,11 @@ const NotificationInfo = () => {
                     setContent(data.recipients);
 
                 }
+                setLoaded(true)
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
+                setLoaded(true)
             });
         setLoaded(true)
     }
@@ -110,85 +112,85 @@ const NotificationInfo = () => {
             });
     }
 
-    return loaded ? (
-        notification ? (
-            <>
-                <Navbar>
-                    <Nav>
-                        <Breadcrumbs />
-                    </Nav>
-                </Navbar>
-                <Col className='p-3'>
-                    <Card className='shadow text center text-md-start'>
-                        <Card.Body>
-                            <InputGroup className='mb-1'>
-                                <InputGroup.Text>Статус</InputGroup.Text>
-                                <Form.Control readOnly value={notification.status} />
-                            </InputGroup>
-                            <InputGroup className='mb-1'>
-                                <InputGroup.Text>Создана</InputGroup.Text>
-                                <Form.Control readOnly value={notification.creation_date} />
-                            </InputGroup>
-                            <InputGroup className='mb-1'>
-                                <InputGroup.Text>Сформирована</InputGroup.Text>
-                                <Form.Control readOnly value={notification.formation_date ? notification.formation_date : ''} />
-                            </InputGroup>
-                            <InputGroup className='mb-1'>
-                                <InputGroup.Text>{notification.status === 'отклонена' ? 'Отклонена' : 'Подтверждена'}</InputGroup.Text>
-                                <Form.Control readOnly value={notification.completion_date ? notification.completion_date : ''} />
-                            </InputGroup>
-                            <InputGroup className='mb-1'>
-                                <InputGroup.Text>Тип уведомления</InputGroup.Text>
-                                <Form.Control
-                                    readOnly={!edit}
-                                    value={notification_type}
-                                    onChange={(e) => setNType(e.target.value)}
-                                />
-                                {!edit && notification.status === 'черновик' && <Button onClick={() => setEdit(true)}>Изменить</Button>}
-                                {edit && <Button variant='success' onClick={update}>Сохранить</Button>}
-                                {edit && <Button
-                                    variant='danger'
-                                    onClick={() => {
-                                        setNType(notification.notification_type ? notification.notification_type : '');
-                                        setEdit(false)
-                                    }}>
-                                    Отменить
-                                </Button>}
-                            </InputGroup>
-                            {notification.status != 'черновик' &&
+    console.log(notification)
+
+    return (
+        <LoadAnimation loaded={loaded}>
+            {notification ? (
+                <>
+                    <Navbar>
+                            <Breadcrumbs />
+                    </Navbar>
+                    <Col className='p-3 pt-1'>
+                        <Card className='shadow text center text-md-start'>
+                            <Card.Body>
                                 <InputGroup className='mb-1'>
-                                    <InputGroup.Text>Статус отправки</InputGroup.Text>
-                                    <Form.Control readOnly value={notification.sending_status ? notification.sending_status : ''} />
+                                    <InputGroup.Text className='t-input-group-text'>Статус</InputGroup.Text>
+                                    <Form.Control readOnly value={notification.status} />
+                                </InputGroup>
+                                <InputGroup className='mb-1'>
+                                <InputGroup.Text className='t-input-group-text'>Создана</InputGroup.Text>
+                                    <Form.Control readOnly value={notification.creation_date} />
+                                </InputGroup>
+                                <InputGroup className='mb-1'>
+                                    <InputGroup.Text className='t-input-group-text'>Сформирована</InputGroup.Text>
+                                    <Form.Control readOnly value={notification.formation_date ? notification.formation_date : ''} />
+                                </InputGroup>
+                                {(notification.status == 'отклонена' || notification.status == 'завершена') && <InputGroup className='mb-1'>
+                                    <InputGroup.Text className='t-input-group-text'>{notification.status === 'отклонена' ? 'Отклонена' : 'Подтверждена'}</InputGroup.Text>
+                                    <Form.Control readOnly value={notification.completion_date ? notification.completion_date : ''} />
                                 </InputGroup>}
-                            {notification.status == 'черновик' &&
-                                <ButtonGroup className='flex-grow-1 w-100'>
-                                    <Button variant='success' onClick={confirm}>Сформировать</Button>
-                                    <Button variant='danger' onClick={deleteN}>Удалить</Button>
-                                </ButtonGroup>}
-                        </Card.Body>
-                    </Card>
-                    {content && <Row className='row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1 mt-2'>
-                        {content.map((recipient) => (
-                            <div className='d-flex p-2 justify-content-center' key={recipient.uuid}>
-                                <SmallRCard  {...recipient}>
-                                    {notification.status == 'черновик' &&
-                                        <Button
-                                            variant='outline-danger'
-                                            className='mt-0 rounded-bottom'
-                                            onClick={delFromNotification(recipient.uuid)}>
-                                            Удалить
-                                        </Button>}
-                                </SmallRCard>
-                            </div>
-                        ))}
-                    </Row>}
-                </Col>
-            </>
-        ) : (
-            <h4 className='text-center'>Такой перевозки не существует</h4>
-        )
-    ) : (
-        <LoadAnimation />
+                                <InputGroup className='mb-1'>
+                                    <InputGroup.Text className='t-input-group-text'>Тип уведомления</InputGroup.Text>
+                                    <Form.Control
+                                        readOnly={!edit}
+                                        value={notification_type}
+                                        onChange={(e) => setNType(e.target.value)}
+                                    />
+                                    {!edit && notification.status === 'черновик' && <Button onClick={() => setEdit(true)}>Изменить</Button>}
+                                    {edit && <Button variant='success' onClick={update}>Сохранить</Button>}
+                                    {edit && <Button
+                                        variant='danger'
+                                        onClick={() => {
+                                            setNType(notification.notification_type ? notification.notification_type : '');
+                                            setEdit(false)
+                                        }}>
+                                        Отменить
+                                    </Button>}
+                                </InputGroup>
+                                {notification.status != 'черновик' &&
+                                    <InputGroup className='mb-1'>
+                                        <InputGroup.Text className='t-input-group-text'>Статус отправки</InputGroup.Text>
+                                        <Form.Control readOnly value={notification.sending_status ? notification.sending_status : ''} />
+                                    </InputGroup>}
+                                {notification.status == 'черновик' &&
+                                    <ButtonGroup className='flex-grow-1 w-100'>
+                                        <Button variant='success' onClick={confirm}>Сформировать</Button>
+                                        <Button variant='danger' onClick={deleteN}>Удалить</Button>
+                                    </ButtonGroup>}
+                            </Card.Body>
+                        </Card>
+                        {content && <Row className='row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1 mt-2'>
+                            {content.map((recipient) => (
+                                <div className='d-flex p-2 justify-content-center' key={recipient.uuid}>
+                                    <SmallRCard  {...recipient}>
+                                        {notification.status == 'черновик' &&
+                                            <Button
+                                                variant='outline-danger'
+                                                className='mt-0 rounded-bottom'
+                                                onClick={delFromNotification(notification.uuid)}>
+                                                Удалить
+                                            </Button>}
+                                    </SmallRCard>
+                                </div>
+                            ))}
+                        </Row>}
+                    </Col>
+                </>
+            ) : (
+                <h4 className='text-center'>Такого уведомления не существует</h4>
+            )}
+        </LoadAnimation>
     )
 }
 

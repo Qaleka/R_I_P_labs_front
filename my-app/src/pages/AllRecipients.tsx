@@ -78,8 +78,8 @@ const AllRecipients = () => {
                 </Form>
             </Navbar>
             <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1'>
-            {recipients ? (
-                    recipients.map((recipient) => (
+            <LoadAnimation loaded={recipients.length > 0}>
+                    {recipients.map((recipient) => (
                     <div className='d-flex py-1 p-2 justify-content-center' key={recipient.uuid}>
                         <SmallRCard  {...recipient}>
                                 {role != 0 &&
@@ -92,10 +92,8 @@ const AllRecipients = () => {
                                 }
                             </SmallRCard>
                     </div>
-                ))
-                ) : (
-                    <LoadAnimation />
-                )}   
+                ))}
+                </LoadAnimation>
         </div>
         {!!role && <Link to={`/notifications/${draft}`}>
                 <Button
