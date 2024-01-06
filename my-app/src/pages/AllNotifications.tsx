@@ -67,11 +67,11 @@ const AllNotifications = () => {
                         </Form.Select>
                     </InputGroup>
                     <DateTimePicker
-                        selected={endDate ? new Date(endDate) : null}
+                        selected={startDate ? new Date(startDate) : null}
                         onChange={(date: Date) => dispatch(setDateStart(date ? date.toISOString() : null))}
                     />
                     <DateTimePicker
-                        selected={startDate ? new Date(startDate) : null}
+                        selected={endDate ? new Date(endDate) : null}
                         onChange={(date: Date) => dispatch(setDateEnd(date ? date.toISOString() : null))}
                     />
                     <Button
@@ -109,7 +109,7 @@ const AllNotifications = () => {
                                     <Col className='d-flex flex-col align-items-center justify-content-center'>
                                         <Link to={`/notifications/${notification.uuid}`} className='text-decoration-none' >
                                             <Button
-                                                variant='outline-secondary'
+                                                variant='outline-primary'
                                                 size='sm'
                                                 className='align-self-center'
                                             >

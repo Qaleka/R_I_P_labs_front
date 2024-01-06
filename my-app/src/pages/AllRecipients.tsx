@@ -97,8 +97,8 @@ const AllRecipients = () => {
         </div>
         {!!role && <Link to={`/notifications/${draft}`}>
                 <Button
-                    style={{ position: 'fixed', bottom: '16px', right: '16px', zIndex: '1000' }}
-                    className="btn btn-primary rounded-pill"
+                    style={{ position: 'fixed', bottom: '16px', left: '16px', zIndex: '1000' }}
+                    className="btn btn-primary"
                     disabled={!draft}>
                     Корзина
                 </Button>
