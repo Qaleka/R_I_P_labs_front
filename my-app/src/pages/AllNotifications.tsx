@@ -8,7 +8,7 @@ import { INotification } from "../models";
 
 import { MODERATOR } from '../components/AuthCheck'
 import { useLocation, Link } from 'react-router-dom';
-import { Navbar, Form, Button, Table, Col, InputGroup } from 'react-bootstrap';
+import { Navbar, Form, Button, Table, InputGroup } from 'react-bootstrap';
 import { clearHistory, addToHistory } from "../store/historySlice";
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -53,12 +53,11 @@ const AllNotifications = () => {
         <>
             <Navbar>
                 <Form className="d-flex flex-row align-items-stretch flex-grow-1 gap-2" onSubmit={handleSearch}>
-                <InputGroup size='sm'>
+                <InputGroup size='sm' className='shadow-sm'>
                         <InputGroup.Text >Статус</InputGroup.Text>
                         <Form.Select
                             defaultValue={statusFilter}
                             onChange={(status) => dispatch(setStatus(status.target.value))}
-                            className="shadow-sm"
                         >
                             <option value="">Любой</option>
                             <option value="сформирован">Сформирован</option>
@@ -105,8 +104,7 @@ const AllNotifications = () => {
                                 <td className='text-center'>{notification.formation_date}</td>
                                 <td className='text-center'>{notification.completion_date}</td>
                                 <td className='text-center'>{notification.notification_type}</td>
-                                <td className=''>
-                                    <Col className='d-flex flex-col align-items-center justify-content-center'>
+                                <td className='p-1 text-center align-middle'>
                                         <Link to={`/notifications/${notification.uuid}`} className='text-decoration-none' >
                                             <Button
                                                 variant='outline-primary'
@@ -116,7 +114,6 @@ const AllNotifications = () => {
                                                 Подробнее
                                             </Button>
                                         </Link>
-                                    </Col>
                                 </td>
                             </tr>
                         ))}

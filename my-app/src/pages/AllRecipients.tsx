@@ -33,6 +33,7 @@ const AllRecipients = () => {
 
                 const handleSearch = (event: React.FormEvent<any>) => {
                     event.preventDefault();
+                    setRecipients([])
                     getRecipients();
                 }
             
