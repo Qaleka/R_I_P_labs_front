@@ -165,7 +165,7 @@ const NotificationInfo = () => {
                                     </InputGroup>}
                                 {notification.status == 'черновик' &&
                                     <ButtonGroup className='flex-grow-1 w-100'>
-                                        <Button variant='success' onClick={confirm}>Сформировать</Button>
+                                        <Button variant='primary' onClick={confirm}>Сформировать</Button>
                                         <Button variant='danger' onClick={deleteN}>Удалить</Button>
                                     </ButtonGroup>}
                             </Card.Body>
@@ -178,7 +178,7 @@ const NotificationInfo = () => {
                                             <Button
                                                 variant='outline-danger'
                                                 className='mt-0 rounded-bottom'
-                                                onClick={delFromNotification(notification.uuid)}>
+                                                onClick={delFromNotification(recipient.uuid)}>
                                                 Удалить
                                             </Button>}
                                     </SmallRCard>
