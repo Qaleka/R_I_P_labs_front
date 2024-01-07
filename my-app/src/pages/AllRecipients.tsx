@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SmallRCard } from '../components/RecipientCard';
+import RecipientCard from '../components/RecipientCard';
 import LoadAnimation from '../components/LoadAnimation';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
@@ -82,7 +82,7 @@ const AllRecipients = () => {
             <LoadAnimation loaded={recipients.length > 0}>
                     {recipients.map((recipient) => (
                     <div className='d-flex py-1 p-2 justify-content-center' key={recipient.uuid}>
-                        <SmallRCard  {...recipient}>
+                        <RecipientCard  {...recipient}>
                                 {role != 0 &&
                                     <Button
                                         variant='outline-primary'
@@ -91,7 +91,7 @@ const AllRecipients = () => {
                                         Добавить в корзину
                                     </Button>
                                 }
-                            </SmallRCard>
+                            </RecipientCard>
                     </div>
                 ))}
                 </LoadAnimation>

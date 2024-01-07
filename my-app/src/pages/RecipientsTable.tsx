@@ -90,26 +90,31 @@ const RecipientTable = () => {
                                 <td className='text-center'>{recipient.adress}</td>
                                 <td className='text-center'>{recipient.email}</td>
                                 <td className='text-center'>{recipient.age}</td>
-                                <td className='text-center align-middle'>
-                                    <table className='table m-0'>
-                                        <tr>
-                                            <Link
-                                                to={`/recipients-edit/${recipient.uuid}`}
-                                                className='btn btn-sm btn-outline-primary text-decoration-none w-100' >
-                                                Редактировать
-                                            </Link>
-                                        </tr>
-                                        <tr><td className='p-1'></td></tr>
-                                        <tr>
-                                            <Button
-                                                variant='outline-danger'
-                                                size='sm'
-                                                className='w-100'
-                                                onClick={deleteRecipient(recipient.uuid)}>
-                                                Удалить
-                                            </Button>
-                                        </tr>
-                                    </table>
+                                <td className='text-center align-middle p-0'>
+                                <Table className='m-0'>
+                                        <tbody>
+                                            <tr>
+                                                <td className='py-1 border-0' style={{ background: 'transparent' }}>
+                                                    <Link
+                                                        to={`/recipients-edit/${recipient.uuid}`}
+                                                        className='btn btn-sm btn-outline-primary text-decoration-none w-100' >
+                                                        Изменить
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td className='py-1 border-0' style={{ background: 'transparent' }}>
+                                                    <Button
+                                                        variant='outline-danger'
+                                                        size='sm'
+                                                        className='w-100'
+                                                        onClick={deleteRecipient(recipient.uuid)}>
+                                                        Удалить
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
                                 </td>
                             </tr>
                         ))}

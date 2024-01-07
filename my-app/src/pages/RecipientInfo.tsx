@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { BigRCard } from '../components/RecipientCard';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import CardImage from '../components/CardImage';
+import { Card, Row, Navbar, ListGroup } from 'react-bootstrap';
 import LoadAnimation from '../components/LoadAnimation';
 import { getRecipient } from '../api'
 import { IRecipient } from '../models';
@@ -32,21 +31,35 @@ const RecipientInfo: FC = () => {
             });
         }, [dispatch]);
 
-        return loaded ? (
-            recipient ? (
-                <>
-                    <Navbar>
-                        <Nav>
+        return (
+            <LoadAnimation loaded={loaded}>
+                {recipient ? (
+                    <>
+                        <Navbar>
                             <Breadcrumbs />
-                        </Nav>
-                    </Navbar>
-                    <BigRCard {...recipient} />
+                            </Navbar>
+                    <Card className='shadow-lg text-center text-md-start'>
+                        <Row>
+                            <div className='col-12 col-md-8 overflow-hidden'>
+                                <CardImage url={recipient.image_url} />
+                            </div>
+                            <Card.Body className='col-12 col-md-4 ps-md-0'>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item>
+                                        <Card.Title>{recipient.fio}</Card.Title>
+                                        <Card.Text>Почта: {recipient.email}</Card.Text>
+                                        <Card.Text>Возраст: {recipient.age} мм</Card.Text>
+                                        <Card.Text>Адрес: {recipient.adress} мм</Card.Text>
+                                    </ListGroup.Item>
+                                </ListGroup>
+                            </Card.Body>
+                        </Row>
+                    </Card>
                 </ >
             ) : (
                 <h3 className='text-center'>Такого получателя не существует</h3>
-            )
-        ) : (
-            <LoadAnimation />
+            )}
+        </LoadAnimation>
     )
 }
 

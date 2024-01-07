@@ -9,7 +9,7 @@ import { AppDispatch } from "../store";
 import { INotification, IRecipient } from "../models";
 import { addToHistory } from "../store/historySlice";
 import LoadAnimation from '../components/LoadAnimation';
-import { SmallRCard } from '../components/RecipientCard';
+import RecipientCard from '../components/RecipientCard';
 import Breadcrumbs from '../components/Breadcrumbs';
 
 
@@ -173,7 +173,7 @@ const NotificationInfo = () => {
                         {content && <Row className='row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1 mt-2'>
                             {content.map((recipient) => (
                                 <div className='d-flex p-2 justify-content-center' key={recipient.uuid}>
-                                    <SmallRCard  {...recipient}>
+                                    <RecipientCard  {...recipient}>
                                         {notification.status == 'черновик' &&
                                             <Button
                                                 variant='outline-danger'
@@ -181,7 +181,7 @@ const NotificationInfo = () => {
                                                 onClick={delFromNotification(recipient.uuid)}>
                                                 Удалить
                                             </Button>}
-                                    </SmallRCard>
+                                    </RecipientCard>
                                 </div>
                             ))}
                         </Row>}

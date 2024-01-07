@@ -29,26 +29,25 @@ function NavigationBar() {
             });
     }
     return (
-        <Navbar expand="lg" className="bg-primary bg-primary" >
+        <Navbar expand="lg" className="bg-primary" >
             <div className='container-xl px-2 px-sm-3'>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto flex-grow-1">
                     <Link to="/recipients" className="nav-link">Получатели</Link>
                     <Link to="/notifications" className="nav-link">Уведомления</Link>
-                    {userRole === MODERATOR && <Link to="/recipients-edit" className="nav-link">Управление получателями</Link>}
+                    {userRole === MODERATOR && <Link to="/recipients-edit" className="nav-link text-nowrap ">Управление получателями</Link>}
                         <Navbar.Collapse className="justify-content-end">
                             {userLogin ? (
                                 <>
                                     <Navbar.Text className="px-sm-2">
-                                        {userLogin}
+                                        Пользователь: {userLogin}
                                     </Navbar.Text>
-                                    <Navbar.Text className="d-none d-sm-block">|</Navbar.Text>
+
                                     <Button
-                                        variant="link"
-                                        className="nav-link"
+                                        variant='danger'
                                         onClick={logout}>
-                                        Выйти
+                                        Выход
                                     </Button>
                                 </>
                             ) : (
