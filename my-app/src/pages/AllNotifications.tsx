@@ -44,7 +44,7 @@ const AllNotifications = () => {
         getData()
         const intervalId = setInterval(() => {
             getData();
-        }, 2000);
+        }, 2500);
         return () => clearInterval(intervalId);
     }, [dispatch, userFilter, statusFilter, startDate, endDate]);
 
