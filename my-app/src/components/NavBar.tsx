@@ -5,8 +5,9 @@ import { Nav, Navbar, Button } from 'react-bootstrap';
 import { axiosAPI } from '../api';
 import { AppDispatch, RootState } from "../store";
 import { resetLogin, resetRole } from "../store/userSlice";
+import { reset } from "../store/searchSlice";
 
-import { MODERATOR } from "./AuthCheck";
+import { CUSTOMER, MODERATOR } from "./AuthCheck";
 
 function NavigationBar() {
     const userLogin = useSelector((state: RootState) => state.user.login);
@@ -22,6 +23,7 @@ function NavigationBar() {
             .then(_ => {
                 dispatch(resetLogin())
                 dispatch(resetRole())
+                dispatch(reset())
                 localStorage.clear()
             })
             .catch((error) => {
@@ -35,7 +37,7 @@ function NavigationBar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto flex-grow-1">
                     <Link to="/recipients" className="nav-link">Получатели</Link>
-                    <Link to="/notifications" className="nav-link">Уведомления</Link>
+                    {(userRole === MODERATOR || userRole === CUSTOMER) && <Link to="/notifications" className="nav-link">Уведомления</Link>}
                     {userRole === MODERATOR && <Link to="/recipients-edit" className="nav-link text-nowrap ">Управление получателями</Link>}
                         <Navbar.Collapse className="justify-content-end">
                             {userLogin ? (
@@ -52,9 +54,8 @@ function NavigationBar() {
                                 </>
                             ) : (
                                 <>
-                                    <Link to='/authorization' className="nav-link">Войти</Link>
-                                    <Navbar.Text className="d-none d-sm-block">|</Navbar.Text>
-                                    <Link to='/registration' className="nav-link">Регистрация</Link>
+                                    <Link to='/authorization' className="nav-link" style={{ backgroundColor: '#12CEF8', padding: '8px', borderRadius: '5px',  marginRight: '10px' }}>Войти</Link>
+                                    <Link to='/registration' className="nav-link" style={{ backgroundColor: '#12CEF8', padding: '8px', borderRadius: '5px' }}>Регистрация</Link>
                                 </>
                             )}
                         </Navbar.Collapse>

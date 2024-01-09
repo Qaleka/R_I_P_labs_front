@@ -58,12 +58,12 @@ const Registration: FC = () => {
                 >
                     Зарегистрироваться
                 </Button>
-
+                <Form.Group>
+                <Form.Text>Уже есть аккаунт? </Form.Text>
                 <Link to={'/authorization'}>
-                    <Button variant="link">
                         Перейти к авторизации
-                    </Button>
                 </Link>
+                </Form.Group>
             </Form>
         </Container>
         </Card>

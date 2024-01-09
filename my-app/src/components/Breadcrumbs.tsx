@@ -24,10 +24,10 @@ function Breadcrumbs() {
                             >
                                 {page.name}
                             </Link>
-                            <Nav.Item className='mx-1'>{">"}</Nav.Item>
+                            <Nav.Item className='mx-2'>{"/"}</Nav.Item>
                         </>
                     ) : (
-                        <Nav.Item className="nav-link p-0 text-dark">
+                        <Nav.Item className="nav-link p-0 text-dark " >
                             {page.name}
                         </Nav.Item>
                     )}

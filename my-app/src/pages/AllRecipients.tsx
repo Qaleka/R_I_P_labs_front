@@ -27,9 +27,6 @@ const AllRecipients = () => {
                     setRecipients(data.recipients)
                     setDraft(data.draft_notification)
                 })
-                .catch((error) => {
-                    console.error("Error fetching data:", error);
-                });
 
                 const handleSearch = (event: React.FormEvent<any>) => {
                     event.preventDefault();
@@ -53,9 +50,6 @@ const AllRecipients = () => {
                         .then(() => {
                             getRecipients();
                         })
-                        .catch((error) => {
-                            console.error("Error fetching data:", error);
-                        });
                 }
     return (
         <>

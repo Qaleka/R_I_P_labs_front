@@ -38,18 +38,18 @@ const RecipientInfo: FC = () => {
                         <Navbar>
                             <Breadcrumbs />
                             </Navbar>
-                    <Card className='shadow-lg text-center text-md-start'>
+                    <Card className='mx-auto shadow w-50 p-3 text-center text-md-start'>
                         <Row>
-                            <div className='col-12 col-md-8 overflow-hidden'>
+                            <div className='col-12 col-md-8 overflow-hidden text-center'>
                                 <CardImage url={recipient.image_url} />
+                                <Card.Title>{recipient.fio}</Card.Title>
                             </div>
                             <Card.Body className='col-12 col-md-4 ps-md-0'>
                                 <ListGroup variant="flush">
                                     <ListGroup.Item>
-                                        <Card.Title>{recipient.fio}</Card.Title>
                                         <Card.Text>Почта: {recipient.email}</Card.Text>
-                                        <Card.Text>Возраст: {recipient.age} мм</Card.Text>
-                                        <Card.Text>Адрес: {recipient.adress} мм</Card.Text>
+                                        <Card.Text>Возраст: {recipient.age}</Card.Text>
+                                        <Card.Text>Адрес: {recipient.adress}</Card.Text>
                                     </ListGroup.Item>
                                 </ListGroup>
                             </Card.Body>

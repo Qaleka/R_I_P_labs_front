@@ -21,6 +21,7 @@ function formatDate(date: Date | null): string {
 }
 
 export async function getNotifications(
+    user: string,
     status: string,
     startDate: string | null,
     endDate: string | null
@@ -30,7 +31,7 @@ export async function getNotifications(
         return [];
     }
     return axiosAPI
-        .get<NotificationsResponse>('/notifications', {
+        .get<NotificationsResponse>('/notifications/', {
             params: {
                 ...(status && { status: status }),
                 ...(startDate && {
@@ -45,8 +46,9 @@ export async function getNotifications(
                 'Content-Type': 'application/json',
             },
         })
-        .then((response) =>
-            response.data.notifications.map((tr: INotification) => ({
+        .then((response) => response.data.notifications
+            .filter((tr: INotification) => tr.customer.toLowerCase().includes(user.toLowerCase()))
+            .map((tr: INotification) => ({
                 ...tr,
                 creation_date: formatDate(new Date(tr.creation_date)),
                 formation_date: tr.formation_date

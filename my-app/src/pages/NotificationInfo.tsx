@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { Card, Row, Col, Navbar, InputGroup, Form, Button, ButtonGroup } from 'react-bootstrap';
 
 import { axiosAPI } from "../api";
 import { getNotification } from '../api/Notifications';
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { INotification, IRecipient } from "../models";
 import { addToHistory } from "../store/historySlice";
 import LoadAnimation from '../components/LoadAnimation';
 import RecipientCard from '../components/RecipientCard';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { MODERATOR } from '../components/AuthCheck';
 
 
 const NotificationInfo = () => {
     let { notification_id } = useParams()
     const [notification, setNotification] = useState<INotification | null>(null)
     const [content, setContent] = useState<IRecipient[] | null>([])
+    const role = useSelector((state: RootState) => state.user.role);
     const [loaded, setLoaded] = useState(false)
     const dispatch = useDispatch<AppDispatch>();
     const location = useLocation().pathname;
@@ -25,7 +27,6 @@ const NotificationInfo = () => {
     const navigate = useNavigate()
 
     const getData = () => {
-        setLoaded(false)
         getNotification(notification_id)
             .then(data => {
                 if (data === null) {
@@ -37,13 +38,7 @@ const NotificationInfo = () => {
                     setContent(data.recipients);
 
                 }
-                setLoaded(true)
             })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-                setLoaded(true)
-            });
-        setLoaded(true)
     }
 
     const update = () => {
@@ -60,15 +55,13 @@ const NotificationInfo = () => {
                 }
             })
             .then(() => getData())
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
         setEdit(false);
     }
 
     useEffect(() => {
-        getData()
         dispatch(addToHistory({ path: location, name: "Уведомление" }))
+        getData()
+        setLoaded(true)
 
     }, [dispatch]);
 
@@ -79,9 +72,6 @@ const NotificationInfo = () => {
         }
         axiosAPI.delete(`/notifications/delete_recipient/${id}`, { headers: { 'Authorization': `Bearer ${accessToken}`, } })
             .then(() => getData())
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
     }
 
     const confirm = () => {
@@ -107,9 +97,14 @@ const NotificationInfo = () => {
             .then(_ => {
                 navigate('/recipients')
             })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
+        }
+
+        const moderator_confirm = (confirm: boolean) => () => {
+            const accessToken = localStorage.getItem('access_token');
+            axiosAPI.put(`/notifications/${notification?.uuid}/moderator_confirm`,
+                { confirm: confirm },
+                { headers: { 'Authorization': `Bearer ${accessToken}`, } })
+                .then(() => getData())
     }
 
     console.log(notification)
@@ -119,7 +114,7 @@ const NotificationInfo = () => {
             {notification ? (
                 <>
                     <Navbar>
-                            <Breadcrumbs />
+                        <Breadcrumbs />
                     </Navbar>
                     <Col className='p-3 pt-1'>
                         <Card className='shadow text center text-md-start'>
@@ -137,7 +132,7 @@ const NotificationInfo = () => {
                                     <Form.Control readOnly value={notification.formation_date ? notification.formation_date : ''} />
                                 </InputGroup>
                                 {(notification.status == 'отклонена' || notification.status == 'завершена') && <InputGroup className='mb-1'>
-                                    <InputGroup.Text className='t-input-group-text'>{notification.status === 'отклонена' ? 'Отклонена' : 'Подтверждена'}</InputGroup.Text>
+                                    <InputGroup.Text className='t-input-group-text'>{notification.status === 'отклонена' ? 'Отклонена' : 'Завершена'}</InputGroup.Text>
                                     <Form.Control readOnly value={notification.completion_date ? notification.completion_date : ''} />
                                 </InputGroup>}
                                 <InputGroup className='mb-1'>
@@ -162,7 +157,14 @@ const NotificationInfo = () => {
                                     <InputGroup className='mb-1'>
                                         <InputGroup.Text className='t-input-group-text'>Статус отправки</InputGroup.Text>
                                         <Form.Control readOnly value={notification.sending_status ? notification.sending_status : ''} />
-                                    </InputGroup>}
+                                        </InputGroup>
+                                }
+                                {notification.status == 'сформировано' && role == MODERATOR &&
+                                    <ButtonGroup className='flex-grow-1 w-100'>
+                                        <Button variant='primary' onClick={moderator_confirm(true)}>Подтвердить</Button>
+                                        <Button variant='danger' onClick={moderator_confirm(false)}>Отменить</Button>
+                                    </ButtonGroup>
+                                }
                                 {notification.status == 'черновик' &&
                                     <ButtonGroup className='flex-grow-1 w-100'>
                                         <Button variant='primary' onClick={confirm}>Сформировать</Button>

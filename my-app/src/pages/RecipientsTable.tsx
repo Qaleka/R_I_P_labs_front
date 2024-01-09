@@ -50,7 +50,7 @@ const RecipientTable = () => {
     return (
         <>
             <Navbar>
-                <Form className="d-flex flex-row flex-grow-1 gap-2" onSubmit={handleSearch}>
+                <Form className="d-flex flex-row flex-grow-1 gap-1" onSubmit={handleSearch}>
                     <Form.Control
                         type="text"
                         placeholder="Поиск"
@@ -66,6 +66,7 @@ const RecipientTable = () => {
                         className="shadow-lg">
                         Поиск
                     </Button>
+                    <Link to='new' className='btn btn-sm btn-warning shadow ms-sm-2'>Добавить получателя</Link>
                 </Form>
             </Navbar>
             < LoadAnimation loaded={recipients.length > 0}>
