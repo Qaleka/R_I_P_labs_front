@@ -38,7 +38,7 @@ function NavigationBar() {
                     <Nav className="me-auto flex-grow-1">
                     <Link to="/recipients" className="nav-link">Получатели</Link>
                     {(userRole === MODERATOR || userRole === CUSTOMER) && <Link to="/notifications" className="nav-link">Уведомления</Link>}
-                    {userRole === MODERATOR && <Link to="/recipients-edit" className="nav-link text-nowrap ">Управление получателями</Link>}
+                    {userRole === MODERATOR && <Link to="/recipients-edit" className="nav-link text-nowrap ">Таблица получателей</Link>}
                         <Navbar.Collapse className="justify-content-end">
                             {userLogin ? (
                                 <>

@@ -37,10 +37,10 @@ const RecipientInfo: FC = () => {
                     <>
                         <Navbar>
                             <Breadcrumbs />
-                            </Navbar>
-                    <Card className='mx-auto shadow w-50 p-3 text-center text-md-start'>
+                        </Navbar>
+                    <Card className='shadow-lg text-center text-md-start' >
                         <Row>
-                            <div className='col-12 col-md-8 overflow-hidden text-center'>
+                            <div className='col-12 col-md-8 overflow-hidden text-center' >
                                 <CardImage url={recipient.image_url} />
                                 <Card.Title>{recipient.fio}</Card.Title>
                             </div>

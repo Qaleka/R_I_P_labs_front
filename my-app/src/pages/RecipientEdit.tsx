@@ -52,7 +52,7 @@ const RecipientInfo: FC = () => {
                 setLoaded(true);
             }
         }
-
+        setEdit(true);
         getData();
 }}, [dispatch]);
 
@@ -133,7 +133,7 @@ const RecipientInfo: FC = () => {
                             <Form noValidate validated={edit} onSubmit={save}>
                                 <Card.Body className='flex-grow-1'>
                                     <InputGroup hasValidation className='mb-1'>
-                                        <InputGroup.Text className='c-input-group-text'>ФИО</InputGroup.Text>
+                                        <InputGroup.Text className='c-input-group-text' style={{width:'100px'}}>ФИО</InputGroup.Text>
                                         <Form.Control id='fio' required type='text' value={recipient.fio} readOnly={!edit} onChange={changeString} />
                                     </InputGroup>
                                     <FloatingLabel
@@ -149,11 +149,11 @@ const RecipientInfo: FC = () => {
                                             onChange={changeString} />
                                     </FloatingLabel>
                                     <InputGroup className='mb-1'>
-                                        <InputGroup.Text className='c-input-group-text'>Возраст</InputGroup.Text>
+                                        <InputGroup.Text className='c-input-group-text' style={{width:'100px'}}>Возраст</InputGroup.Text>
                                         <Form.Control id='age' required type='number' value={isNaN(recipient.age) ? '' : recipient.age} readOnly={!edit} onChange={changeNumber} />
                                     </InputGroup>
                                     <InputGroup className='mb-1'>
-                                        <InputGroup.Text className='c-input-group-text'>Почта</InputGroup.Text>
+                                        <InputGroup.Text className='c-input-group-text' style={{width:'100px'}}>Почта</InputGroup.Text>
                                         <Form.Control id='email' required value={recipient.email} readOnly={!edit} onChange={changeString} />
                                     </InputGroup>
                                     <Form.Group className="mb-1">
@@ -173,12 +173,6 @@ const RecipientInfo: FC = () => {
                                         </ButtonGroup>
                                     ) : (
                                         <>
-                                            <Button
-                                                className='w-100'
-                                                onClick={handleEditClick}>
-                                                Изменить
-                                            </Button>
-                                            <Button variant='danger' className='w-100' onClick={deleteRecipient}>Удалить</Button>
                                         </>
                                     )}
                                 </Form>

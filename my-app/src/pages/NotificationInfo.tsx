@@ -116,19 +116,19 @@ const NotificationInfo = () => {
                     <Navbar>
                         <Breadcrumbs />
                     </Navbar>
-                    <Col className='p-3 pt-1'>
-                        <Card className='shadow text center text-md-start'>
+                    <Col className='p-3 pt-1' >
+                        <Card className='shadow text center text-md-start' >
                             <Card.Body>
                                 <InputGroup className='mb-1'>
-                                    <InputGroup.Text className='t-input-group-text'>Статус</InputGroup.Text>
+                                    <InputGroup.Text className='t-input-group-text' style={{width:'160px'}}>Статус</InputGroup.Text>
                                     <Form.Control readOnly value={notification.status} />
                                 </InputGroup>
                                 <InputGroup className='mb-1'>
-                                <InputGroup.Text className='t-input-group-text'>Создана</InputGroup.Text>
+                                <InputGroup.Text className='t-input-group-text' style={{width:'160px'}}>Создана</InputGroup.Text>
                                     <Form.Control readOnly value={notification.creation_date} />
                                 </InputGroup>
                                 <InputGroup className='mb-1'>
-                                    <InputGroup.Text className='t-input-group-text'>Сформирована</InputGroup.Text>
+                                    <InputGroup.Text className='t-input-group-text' style={{width:'160px'}}>Сформирована</InputGroup.Text>
                                     <Form.Control readOnly value={notification.formation_date ? notification.formation_date : ''} />
                                 </InputGroup>
                                 {(notification.status == 'отклонена' || notification.status == 'завершена') && <InputGroup className='mb-1'>
@@ -136,7 +136,7 @@ const NotificationInfo = () => {
                                     <Form.Control readOnly value={notification.completion_date ? notification.completion_date : ''} />
                                 </InputGroup>}
                                 <InputGroup className='mb-1'>
-                                    <InputGroup.Text className='t-input-group-text'>Тип уведомления</InputGroup.Text>
+                                    <InputGroup.Text className='t-input-group-text' style={{width:'160px'}}>Тип уведомления</InputGroup.Text>
                                     <Form.Control
                                         readOnly={!edit}
                                         value={notification_type}
@@ -155,15 +155,9 @@ const NotificationInfo = () => {
                                 </InputGroup>
                                 {notification.status != 'черновик' &&
                                     <InputGroup className='mb-1'>
-                                        <InputGroup.Text className='t-input-group-text'>Статус отправки</InputGroup.Text>
+                                        <InputGroup.Text className='t-input-group-text' style={{width:'160px'}}>Статус отправки</InputGroup.Text>
                                         <Form.Control readOnly value={notification.sending_status ? notification.sending_status : ''} />
                                         </InputGroup>
-                                }
-                                {notification.status == 'сформировано' && role == MODERATOR &&
-                                    <ButtonGroup className='flex-grow-1 w-100'>
-                                        <Button variant='primary' onClick={moderator_confirm(true)}>Подтвердить</Button>
-                                        <Button variant='danger' onClick={moderator_confirm(false)}>Отменить</Button>
-                                    </ButtonGroup>
                                 }
                                 {notification.status == 'черновик' &&
                                     <ButtonGroup className='flex-grow-1 w-100'>
