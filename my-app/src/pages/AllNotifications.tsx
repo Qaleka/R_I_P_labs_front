@@ -61,9 +61,9 @@ const AllNotifications = () => {
                             className="shadow-sm"
                         >
                             <option value="">Любой</option>
-                            <option value="сформирован">Сформирован</option>
-                            <option value="завершён">Завершён</option>
-                            <option value="отклонён">Отклонён</option>
+                            <option value="сформировано">Сформировано</option>
+                            <option value="завершено">Завершёно</option>
+                            <option value="отклонено">Отклонёно</option>
                         </Form.Select>
                     </InputGroup>
                     <DateTimePicker

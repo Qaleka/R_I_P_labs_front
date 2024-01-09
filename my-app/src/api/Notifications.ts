@@ -30,7 +30,7 @@ export async function getNotifications(
         return [];
     }
     return axiosAPI
-        .get<NotificationsResponse>('/notifications', {
+        .get<NotificationsResponse>('/notifications/', {
             params: {
                 ...(status && { status: status }),
                 ...(startDate && {
