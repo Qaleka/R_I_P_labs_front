@@ -25,9 +25,15 @@ const AllNotifications = () => {
     const dispatch = useDispatch<AppDispatch>();
     const location = useLocation().pathname;
     const [loaded, setLoaded] = useState(false)
+    const [prevFilter, setPrevFilter] = useState({
+        userFilter,
+        statusFilter,
+        startDate,
+        endDate
+    })
 
     const getData = () => {
-        getNotifications(userFilter, statusFilter, startDate, endDate)
+        getNotifications(prevFilter.userFilter, prevFilter.statusFilter, prevFilter.startDate, prevFilter.endDate)
             .then((data) => {
                 setLoaded(true);
                 setNotifications(data)
@@ -36,6 +42,12 @@ const AllNotifications = () => {
     
         const handleSearch = (event: React.FormEvent<any>) => {
             event.preventDefault();
+            setPrevFilter({
+                userFilter,
+                statusFilter,
+                startDate,
+                endDate
+            })
     }
 
     useEffect(() => {
@@ -46,7 +58,7 @@ const AllNotifications = () => {
             getData();
         }, 2500);
         return () => clearInterval(intervalId);
-    }, [dispatch, userFilter, statusFilter, startDate, endDate]);
+    }, [dispatch, prevFilter]);
 
     const moderator_confirm = (id: string, confirm: boolean) => () => {
         const accessToken = localStorage.getItem('access_token');

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { Card, Row, Col, Navbar, InputGroup, Form, Button, ButtonGroup } from 'react-bootstrap';
 
 import { axiosAPI } from "../api";
@@ -24,7 +24,7 @@ const NotificationInfo = () => {
     const location = useLocation().pathname;
     const [edit, setEdit] = useState(false)
     const [notification_type, setNType] = useState<string>('')
-    const navigate = useNavigate()
+
 
     const getData = () => {
         getNotification(notification_id)
@@ -74,31 +74,7 @@ const NotificationInfo = () => {
             .then(() => getData())
     }
 
-    const confirm = () => {
-        const accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
-            return
-        }
-        axiosAPI.put('/notifications/user_confirm', null, { headers: { 'Authorization': `Bearer ${accessToken}`, } })
-            .then(_ => {
-                getData()
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }
-
-    const deleteN = () => {
-        const accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
-            return
-        }
-        axiosAPI.delete('/notifications', { headers: { 'Authorization': `Bearer ${accessToken}`, } })
-            .then(_ => {
-                navigate('/recipients')
-            })
-        }
-
+   
         const moderator_confirm = (confirm: boolean) => () => {
             const accessToken = localStorage.getItem('access_token');
             axiosAPI.put(`/notifications/${notification?.uuid}/moderator_confirm`,
@@ -159,11 +135,6 @@ const NotificationInfo = () => {
                                         <Form.Control readOnly value={notification.sending_status ? notification.sending_status : ''} />
                                         </InputGroup>
                                 }
-                                {notification.status == 'черновик' &&
-                                    <ButtonGroup className='flex-grow-1 w-100'>
-                                        <Button variant='primary' onClick={confirm}>Сформировать</Button>
-                                        <Button variant='danger' onClick={deleteN}>Удалить</Button>
-                                    </ButtonGroup>}
                             </Card.Body>
                         </Card>
                         {content && <Row className='row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 px-1 mt-2'>
